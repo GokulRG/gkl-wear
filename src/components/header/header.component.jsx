@@ -5,6 +5,8 @@ import { auth } from '../../firebase/firebase.utils';
 import { connect } from 'react-redux';
 import { ReactComponent as Logo } from '../../assets/gkl-logo.svg';
 import './header.styles.scss';
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
 const Header = ({ currentUser }) => {
     return (
@@ -22,7 +24,9 @@ const Header = ({ currentUser }) => {
                 {
                     currentUser ? <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div> : <Link className='option' to='/signin'>SIGN IN</Link>
                 }
+                <CartIcon />
             </div>
+            <CartDropdown/>
         </div>
     );
 };
