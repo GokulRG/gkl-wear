@@ -8,7 +8,7 @@ import './header.styles.scss';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
     return (
         <div className='header'>
             <Link className='logo-container' to='/'>
@@ -26,15 +26,17 @@ const Header = ({ currentUser }) => {
                 }
                 <CartIcon />
             </div>
-            <CartDropdown/>
+            {hidden ? null : <CartDropdown />}
         </div>
     );
 };
 
-const mapStateToProps = (state) => {
+//This is advanced destructuring.
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => {
     return ({
         //How is it state.user.currentuser? state refers to the root reducer. The root reducer has a user property, which refers to the userReducer. And the userReducer has the currentUser property. Just follow the chain.
-        currentUser: state.user.currentUser
+        currentUser,
+        hidden
     });
 };
 
