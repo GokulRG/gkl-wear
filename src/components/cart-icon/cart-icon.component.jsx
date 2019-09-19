@@ -7,14 +7,25 @@ import { toggleCartHidden } from '../../redux/cart/cart-actions';
 import { ReactComponent as ShoppingIcon } from '../../assets/shopping-bag.svg';
 import './cart-icon.styles.scss';
 
-const CartIcon = ( {toggleCartHidden} ) => {
+const CartIcon = ({ toggleCartHidden, itemCount }) => {
     return (
         <div className='cart-icon' onClick={toggleCartHidden}>
             <ShoppingIcon className='shopping-icon' />
-            <span className='item-count'>0</span>
+            <span className='item-count'>{itemCount}</span>
         </div>
     );
 }
+
+const mapStateToProps = ({ cart: { cartItems } }) => {
+    return {
+        //Reduce function is native to JS. It's used to iterate through a collection and return a single value
+        //after going through all the values in the collection. The second argument 0 is the initial value of the accumulator.
+        //A callback function is the first argument, that takes in the value that has been accumulated up until now as the first arg and the current value as the second arg.
+        itemCount: cartItems.reduce((accumulatedQuantity, cartItem) => {
+            return accumulatedQuantity + cartItem.quantity;
+        }, 0)
+    };
+};
 
 //After importing the connect and the action that you want to trigger, you define a mapDispatchToProps function
 //The mapDispatchToProps is simple, It just dispatches an action. So since you imported the action that you 
@@ -30,4 +41,4 @@ const mapDispatchToProps = (dispatch) => {
 
 //null is the first arg, because that place is reserved for mapStateToProps,
 //second arg is mapDispatchToProps.
-export default connect(null, mapDispatchToProps)(CartIcon);
+export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);
